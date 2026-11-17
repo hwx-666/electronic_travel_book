@@ -1,6 +1,9 @@
 // 自动生成文件，勿手改。数据源：lukes/ISO-3166-Countries-with-Regional-Codes (CC0)
 // 用途：world-atlas 的 TopoJSON 里国家 id 是 ISO 3166-1 数字码（如 156），
-// 需要在这里转成 alpha-2 代码（如 CN），用于路由与 visited 状态标识。
+// 本文件提供数字码 → { code: alpha-2, name: 英文名 } 的映射：
+//  - ISO_NUMERIC 供 world.ts 将 TopoJSON id 转成路由/点亮标识用的 alpha-2；
+//  - ALPHA2_NAME 供展示层查国家英文名（搜索高亮、占位页等）。
+// 注意：alpha-3 → alpha-2 的映射在 alpha3.ts（geoBoundaries 键用 alpha-3）。
 
 export interface IsoCountry {
   /** ISO 3166-1 alpha-2，如 CN / US */

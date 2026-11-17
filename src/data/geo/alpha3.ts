@@ -1,6 +1,10 @@
 // 自动生成文件，勿手改。数据源：lukes/ISO-3166-Countries-with-Regional-Codes (CC0)
-// 用途：geoBoundaries 的国家键是 ISO alpha-3（如 "USA"），路由/visitedKey 用 alpha-2（如 "US"），
-// 这里提供 alpha-3 → alpha-2 的映射，以及 alpha-2 → 英文名。
+// 用途：geoBoundaries 的国家键是 ISO alpha-3（如 "USA"），而路由 / visitedKey /
+// 点亮标识统一用 alpha-2（如 "US"），所以本文件提供两套静态映射：
+//  - ALPHA3_TO_ALPHA2：foreign.ts 把 geoBoundaries 的顶层键转成路由参数；
+//  - ALPHA2_NAME：英文名回查（供搜索、占位页等展示）。
+// 与 iso3166.ts 的分工：那边是数字码 → alpha-2（world-atlas 用），
+// 这边是 alpha-3 → alpha-2（geoBoundaries 用），不要混用。
 
 export const ALPHA3_TO_ALPHA2: Record<string, string> = {
   "ABW": "AW",

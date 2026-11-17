@@ -1,7 +1,7 @@
 /**
  * 顶部导航：返回按钮 + 面包屑（hash 路由 Link）。
- * 修改提示：crumbs 最后一级为当前页（无链接）；返回按钮与面包屑
- * 各自独立，页面层按需传 onBack / crumbs。
+ * 约定：crumbs 最后一级为当前页（无链接）；返回按钮与面包屑各自独立，
+ * 页面层按需传 onBack / crumbs。
  */
 import { Link } from 'react-router-dom'
 import './Navigation.css'

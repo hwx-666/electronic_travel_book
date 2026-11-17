@@ -1,8 +1,8 @@
 /**
  * 国家页（路由 #/country/:code）：面包屑 + 返回 + 地区搜索 + 国家视图。
  * 中国走专属视图（省级地图），外国走 geoBoundaries ADM1 地图。
- * 修改提示：新增国家的搜索名录/跳转逻辑时，注意中国与外国分支
- * 的路径规则不同（中国 6 位 adcode，外国 alpha2 + adminCode）。
+ * 中国与外国分支的路径规则不同（中国 6 位 adcode，外国 alpha2 + adminCode），
+ * 新增国家的搜索名录/跳转逻辑时注意区分。
  */
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'

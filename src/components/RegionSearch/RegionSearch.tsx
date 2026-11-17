@@ -1,8 +1,8 @@
 /**
  * 通用地区搜索：右下角按钮展开面板，即时过滤 + 点击跳转。
  * 泛型设计：value 类型由页面层决定（中国用地区对象，外国用 SearchableRegion）。
- * 修改提示：结果最多 12 条（防长列表卡顿）；输入用 trimRegionName
- * 归一化（去行政后缀），改匹配逻辑时保持与 regions.ts 一致。
+ * 约定：结果最多 12 条（防长列表卡顿）；输入用 trimRegionName 归一化
+ * （去行政后缀），匹配逻辑保持与 regions.ts 一致。
  */
 import { useMemo, useState } from 'react'
 import { trimRegionName } from '../../data/geo/regions'

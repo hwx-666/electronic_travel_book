@@ -1,5 +1,5 @@
 /* 国家视图容器：全屏固定定位，地图占满视口。
-   修改提示：颜色一律走 theme.css 变量，勿写死色值。 */
+   颜色一律走 theme.css 变量，勿写死色值。 */
 .country-view {
   position: fixed;
   inset: 0;

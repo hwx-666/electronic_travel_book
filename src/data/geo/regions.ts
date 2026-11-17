@@ -1,8 +1,8 @@
 /**
  * 搜索名录与工具函数：中国省/市名录（china-division 静态表）+ 外国区划。
  * 搜索提示词（pickRandomNames）、地名归一化（trimRegionName）也在这里。
- * 修改提示：CITY_REGIONS 的省码是 2 位、市码 4 位，统一 padEnd(6,'0')
- * 成标准 6 位 adcode 再参与搜索与跳转，改这里时勿破坏该约定。
+ * 注意：CITY_REGIONS 的省码是 2 位、市码 4 位，统一 padEnd(6,'0')
+ * 成标准 6 位 adcode 再参与搜索与跳转。
  */
 import pcCode from 'china-division/dist/pc-code.json'
 import { canDrillDown, loadChinaProvinces } from './china'

@@ -1,7 +1,7 @@
 /**
  * 中国省级平面地图（CountryView 的中国分支）。
- * 数据按需加载自 DataV（china.ts 缓存），点击可下钻到省。
- * 修改提示：只负责"省级渲染 + 下钻跳转"，市级渲染复用 Map2D。
+ * 职责：省级渲染 + 下钻跳转；市级渲染不在此处理，复用 Map2D。
+ * 数据按需加载自 DataV（china.ts 缓存），点击省份跳转省页。
  */
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'

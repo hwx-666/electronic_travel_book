@@ -1,8 +1,7 @@
 /**
  * 地球页（路由 #/earth）：导航 + 3D 地球 + 右下角国家搜索。
  * 国家名录异步加载（world.ts 缓存），失败时显示"加载失败"空态。
- * 修改提示：地球点击与搜索点击都跳 /country/:code，新增入口
- * 时保持跳转路径一致。
+ * 地球点击与搜索点击都跳 /country/:code，新增入口保持路径一致。
  */
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'

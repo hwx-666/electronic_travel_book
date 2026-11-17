@@ -1,8 +1,8 @@
 /**
  * 外国一级行政区详情页（路由 #/country/:code/:r1）。
  * 加载该国 ADM2 并按 parentCode 过滤出本板块的下级，渲染 2D 地图。
- * 修改提示：parentCode 由 foreign.ts 的 attachParents 推导，
- * 若发现归属错乱，先检查数据层的推导逻辑而非本页过滤。
+ * parentCode 由 foreign.ts 的 attachParents 推导；若发现归属错乱，
+ * 先检查数据层的推导逻辑，而不是在本页改过滤条件。
  */
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -12,7 +12,7 @@ import RegionSearch, {
 } from '../components/RegionSearch/RegionSearch'
 import Map2D from '../components/Map2D/Map2D'
 import MapState from '../components/Map2D/MapState'
-import MapEmpty from '../components/Map2D/MapEmpty'
+import Memories from '../components/Memories/Memories'
 import {
   getCountryAdm1,
   getCountryAdm2,
@@ -57,6 +57,11 @@ function ForeignRegionContent({
   const [missing, setMissing] = useState(false)
   const [error, setError] = useState(false)
   const [attempt, setAttempt] = useState(0)
+
+  // visitedKey = <alpha2>-<adminCode>（regionCode 即 adminCode）。
+  // 不主动标记：点亮由回忆推导——本页回忆（missing 分支）父层链为
+  // 国家，下级 ADM2 回忆（ForeignCityPage 写入）ancestorKeys 带本键。
+  const visitedKey = `${countryCode.toUpperCase()}-${regionCode.toUpperCase()}`
 
   useEffect(() => {
     let cancelled = false
@@ -152,9 +157,12 @@ function ForeignRegionContent({
           }}
         />
       ) : missing ? (
-        <MapEmpty
-          title={regionName}
-          hint="该地区没有更细的下级行政区划"
+        // 该 ADM1 没有更细的下级（无 ADM2）：接入回忆区；
+        // 回忆父层链只有国家（回忆键本身即 ADM1），用 [countryCode]
+        <Memories
+          visitedKey={visitedKey}
+          placeName={regionName}
+          ancestorKeys={[countryCode]}
         />
       ) : !children ? (
         <MapState kind="loading" />

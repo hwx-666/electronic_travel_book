@@ -1,0 +1,183 @@
+/* 旅行回忆区：全屏纵向布局（标题 → 滚动列表 → 底部添加表单）。
+   颜色全部取自 theme.css 变量，业务代码不写死色值。
+   z-index 低于 Navigation(10) 与搜索面板，保证导航/搜索可交互。 */
+
+.memories {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  /* 顶部避让固定导航栏 */
+  padding: 72px 24px 24px;
+  gap: 16px;
+}
+
+/* 标题区 */
+.memories__header {
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.memories__title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--color-content-text);
+}
+
+.memories__warn {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #e8a87c;
+  opacity: 0.9;
+}
+
+/* 列表区：唯一可滚动区域 */
+.memories__list {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-content-bg);
+  padding: 16px;
+}
+
+.memories__empty {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.memories__empty-title {
+  font-size: 16px;
+  color: var(--color-content-text);
+}
+
+.memories__empty-hint {
+  font-size: 13px;
+  color: var(--color-content-text);
+  opacity: 0.65;
+}
+
+.memories__items {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.memories__item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--color-app-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.memories__item-main {
+  min-width: 0;
+  flex: 1;
+}
+
+.memories__item-date {
+  font-size: 12px;
+  color: var(--color-content-text);
+  opacity: 0.7;
+}
+
+.memories__item-text {
+  margin-top: 6px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-content-text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.memories__delete {
+  flex-shrink: 0;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 12px;
+  background: var(--color-button-bg);
+  color: var(--color-button-text);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* 底部添加表单 */
+.memories__form {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-content-bg);
+  padding: 14px 16px;
+}
+
+.memories__form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.memories__date-label {
+  font-size: 13px;
+  color: var(--color-content-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.memories__date {
+  font: inherit;
+  color: var(--color-button-text);
+  background: var(--color-button-bg);
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+
+.memories__count {
+  font-size: 12px;
+  color: var(--color-content-text);
+  opacity: 0.65;
+}
+
+.memories__textarea {
+  font: inherit;
+  resize: none;
+  min-height: 64px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: var(--color-app-bg);
+  color: var(--color-content-text);
+}
+
+.memories__textarea:focus {
+  outline: none;
+  border-color: var(--color-content-text);
+}
+
+.memories__submit {
+  align-self: flex-end;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 22px;
+  background: var(--color-button-bg);
+  color: var(--color-button-text);
+  font-size: 14px;
+  cursor: pointer;
+}

@@ -2,7 +2,7 @@
  * 地图板块的统一类型定义（渲染层的唯一数据契约）。
  * 所有数据源（world/china/foreign）都输出 MapFeature[]，
  * 渲染组件只认这个结构，不关心数据来自哪个源。
- * 修改提示：新增板块属性时先在这里声明，再让各数据层补齐。
+ * 新增板块属性时先在这里声明，再让各数据层补齐。
  */
 import type { Feature, Geometry } from 'geojson'
 

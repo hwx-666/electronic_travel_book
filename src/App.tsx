@@ -1,8 +1,8 @@
 /**
  * 根组件：只负责包 Provider 与声明路由表，不承载业务逻辑。
  * 新增页面时在这里加路由；页面组件放 src/pages/。
- * 修改提示：中国专属路由（/country/CN/...）必须写在动态段之前，
- * 依赖 React Router 静态段优先匹配，不要打乱顺序。
+ * 注意：中国专属路由（/country/CN/...）必须写在动态段之前，
+ * React Router 静态段优先匹配，顺序不能打乱。
  */
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import AppStoreProvider from './store/AppStoreProvider'

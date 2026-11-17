@@ -1,8 +1,8 @@
 /**
  * 外国一级行政区平面地图（CountryView 的外国分支）。
- * 数据按需加载自 geoBoundaries（foreign.ts 缓存），可下钻到 ADM1 详情。
- * 修改提示：是否可下钻取决于 features 的 hasChildren 属性，
- * 由 foreign.ts 数据层根据"该国有无 ADM2"填好，不要在本组件硬编码国家清单。
+ * 数据按需加载自 geoBoundaries（foreign.ts 缓存），点击板块下钻 ADM1 详情。
+ * 下钻能力来自 features 的 hasChildren 属性（foreign.ts 数据层按
+ * "该国有无 ADM2"填好），组件本身不硬编码国家清单。
  */
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'

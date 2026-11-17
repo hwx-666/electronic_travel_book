@@ -1,5 +1,5 @@
 /* 3D 地球容器：全屏固定定位，给 globe.gl 的 canvas 占位。
-   修改提示：背景透明，深蓝底色来自全局 body 背景变量。 */
+   背景透明，深蓝底色来自全局 body 背景变量。 */
 .earth {
   position: fixed;
   inset: 0;

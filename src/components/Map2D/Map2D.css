@@ -1,5 +1,5 @@
 /* 2D 平面地图：SVG 容器 + 悬浮提示（tooltip）样式。
-   修改提示：板块填充色由 JS（Map2D.tsx 读 theme/colors.ts）控制，
+   板块填充色由 JS（Map2D.tsx 读 theme/colors.ts）控制，
    本文件只管布局与交互反馈。 */
 .map2d {
   position: fixed;

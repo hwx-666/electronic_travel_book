@@ -1,8 +1,8 @@
 /**
  * 3D 地球层（globe.gl 命令式封装）。
- * 负责：板块渲染、hover/点击判定（自带点击容差修复）、visited 着色、
+ * 负责：板块渲染、hover/点击判定（自带点击容差修复）、点亮着色、
  * 描边 z-fighting 修复（径向抬升描边线）。
- * 修改提示：globe.gl 不走 React 渲染，务必在 useEffect 内创建实例；
+ * 实现要点：globe.gl 不走 React 渲染，实例必须在 useEffect 内创建；
  * 颜色一律从 theme/colors.ts 取，禁止写死色值。
  */
 import { useEffect, useRef } from 'react'
@@ -190,8 +190,7 @@ export default function Earth({ onSelectCountry }: EarthProps) {
     }
   }, [])
 
-  // visited 状态变化时，让地球立刻按新状态重新着色
-  const { visited } = useAppStore()
+  // 点亮状态变化时（回忆增删，阶段 4.1 起由回忆推导），让地球立刻重新着色
   useEffect(() => {
     const globe = globeRef.current
     if (!globe) return
@@ -205,7 +204,7 @@ export default function Earth({ onSelectCountry }: EarthProps) {
     })
     // 复制一份数据重新传入，触发 globe 重绘
     globe.polygonsData([...globe.polygonsData()])
-  }, [visited])
+  }, [getVisited])
 
   return <div className="earth" ref={containerRef} />
 }

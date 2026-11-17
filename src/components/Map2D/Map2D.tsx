@@ -2,8 +2,8 @@
  * 2D 平面行政区地图（SVG + d3-geo）。
  * 通用渲染组件：省/市/外国 ADM1/ADM2 都复用本组件，
  * 只认 MapFeature[] 契约，不感知数据来源。
- * 修改提示：投影用墨卡托 fitSize（fitProjection 剔除离群板块 + bbox 防御），
- * 改投影类型/尺寸时注意保持与 3D 地球的视觉一致性。
+ * 投影用墨卡托 fitSize（fitProjection 剔除离群板块 + bbox 防御）；
+ * 调整投影类型/尺寸时注意与 3D 地球保持视觉一致性。
  */
 import { useMemo, useState } from 'react'
 import { geoBounds, geoCentroid, geoDistance, geoMercator, geoPath } from 'd3-geo'

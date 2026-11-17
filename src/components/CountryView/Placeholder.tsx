@@ -1,7 +1,7 @@
 /**
  * 国家页占位组件：数据未就绪或后续阶段尚未实现时显示国家名与代码。
- * 修改提示：当前实际分支已被 ChinaMap/ForeignMap 覆盖，此组件保留
- * 作为降级兜底与后续新阶段的无图国家占位。
+ * 目前实际视图分支已被 ChinaMap/ForeignMap 覆盖，本组件保留作降级
+ * 兜底与后续新阶段无图国家的占位。
  */
 import type { CountryInfo } from './CountryView'
 
