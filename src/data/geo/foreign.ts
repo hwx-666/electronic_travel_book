@@ -56,7 +56,7 @@ const adm2Cache = new Map<string, MapFeature[] | null>()
 async function fetchTopology(iso3: string, level: 1 | 2): Promise<Topology> {
   // 本地优先：public/data/geo/ 下内置了常用国家（如用户要求的 6 国），
   // 同源加载最快且离线可用；缺失或损坏时回退远程 media 直链。
-  const localUrl = `/data/geo/${iso3}-ADM${level}.topojson`
+  const localUrl = `${import.meta.env.BASE_URL}data/geo/${iso3}-ADM${level}.topojson`
   try {
     const localRes = await fetch(localUrl)
     if (localRes.ok) {
