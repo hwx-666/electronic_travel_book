@@ -1,0 +1,38 @@
+/* 国家视图容器：全屏固定定位，地图占满视口。
+   修改提示：颜色一律走 theme.css 变量，勿写死色值。 */
+.country-view {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.country-placeholder {
+  text-align: center;
+  background: var(--color-content-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 40px 56px;
+  max-width: 80vw;
+}
+
+.country-placeholder__name {
+  color: var(--color-content-text);
+  font-size: 32px;
+  margin-bottom: 4px;
+}
+
+.country-placeholder__code {
+  color: var(--color-content-text);
+  opacity: 0.6;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  margin-bottom: 16px;
+}
+
+.country-placeholder__hint {
+  color: var(--color-content-text);
+  opacity: 0.75;
+  font-size: 14px;
+}

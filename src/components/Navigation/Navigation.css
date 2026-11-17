@@ -1,0 +1,65 @@
+/* 顶部导航：返回按钮 + 面包屑。
+   修改提示：层级 z-index 低于搜索面板，保证搜索面板浮在最上层。 */
+.navigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  pointer-events: none;
+}
+
+/* 让内部可点元素恢复交互 */
+.navigation > * {
+  pointer-events: auto;
+}
+
+.navigation__back {
+  background: var(--color-button-bg);
+  color: var(--color-button-text);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  transition: transform 0.15s ease;
+}
+
+.navigation__back:hover {
+  transform: translateX(-2px);
+}
+
+.navigation__crumbs {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.navigation__link {
+  color: var(--color-content-text);
+  font-size: 15px;
+  text-decoration: none;
+  padding: 4px 2px;
+  opacity: 0.85;
+}
+
+.navigation__link:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.navigation__link.is-current {
+  opacity: 1;
+  font-weight: 600;
+}
+
+.navigation__sep {
+  color: var(--color-content-text);
+  opacity: 0.5;
+  font-size: 15px;
+}

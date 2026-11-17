@@ -1,0 +1,22 @@
+/*
+ * 主题变量（CSS 侧）——全部颜色集中在这里。
+ *
+ * 注意：取值必须与 src/theme/colors.ts 保持一致，
+ * 那里是 3D 渲染（Canvas）用的同一份色板。
+ * 后续加暗色模式 / 渐变 / 氛围效果时，只改本文件和 colors.ts，
+ * 业务组件无需改动。
+ */
+:root {
+  --color-unvisited: #1C2B3F;
+  --color-visited: #C4B2A3;
+  --color-stroke: #F9F4F4;
+  --color-content-bg: #5C687E;
+  --color-content-text: #EEE8E3;
+  --color-button-bg: #F9F4F4;
+  --color-button-text: #57687B;
+
+  /* 衍生变量：页面底色直接用"未去过"的深蓝，不新增色值 */
+  --color-app-bg: var(--color-unvisited);
+  --color-app-text: var(--color-content-text);
+  --color-border: var(--color-stroke);
+}
