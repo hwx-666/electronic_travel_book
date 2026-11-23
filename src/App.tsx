@@ -1,20 +1,13 @@
 /**
- * 根组件：只负责包 Provider 与声明路由表，不承载业务逻辑。
- * 新增页面时在这里加路由；页面组件放 src/pages/。
- * 注意：中国专属路由（/country/CN/...）必须写在动态段之前，
- * React Router 静态段优先匹配，顺序不能打乱。
- */
-import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
-import AppStoreProvider from './store/AppStoreProvider'
-import EarthPage from './pages/EarthPage'
-import CountryPage from './pages/CountryPage'
-import ProvincePage from './pages/ProvincePage'
-import CityPage from './pages/CityPage'
-import ForeignRegionPage from './pages/ForeignRegionPage'
-import ForeignCityPage from './pages/ForeignCityPage'
-
-/**
- * 路由（hash 模式）。
+ * 根组件：认证门控 + Provider + 路由表。
+ *
+ * 阶段 5 门控结构：
+ * - AuthProvider 在外层（登录态真源）；
+ * - AppGate 判断：未登录 → 渲染 AuthPage（整站唯一可见页）；
+ *   已登录 → 渲染主应用（AppStoreProvider + 路由 + 全局登出条）；
+ * - AppStoreProvider 在已登录分支内部挂载，避免未登录时拉数据。
+ *
+ * 路由（hash 模式）：
  * 用 hash 而不是 history 模式，是为了将来部署到 GitHub Pages /
  * 任何静态托管时不需要服务端做路由重写，`npm run build` 出来的
  * 静态文件直接能跑。
@@ -29,30 +22,60 @@ import ForeignCityPage from './pages/ForeignCityPage'
  * 中国专属路由（/country/CN/...）写在前：React Router 的静态段比动态段优先，
  * 保证 /country/CN/xxx 永远命中中国页，不落入 /country/:code/:r1。
  */
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { AuthProvider } from './store/AuthProvider'
+import { useAuth } from './store/useAuth'
+import AppStoreProvider from './store/AppStoreProvider'
+import AuthPage from './pages/AuthPage'
+import AccountBar from './components/AccountBar/AccountBar'
+import EarthPage from './pages/EarthPage'
+import CountryPage from './pages/CountryPage'
+import ProvincePage from './pages/ProvincePage'
+import CityPage from './pages/CityPage'
+import ForeignRegionPage from './pages/ForeignRegionPage'
+import ForeignCityPage from './pages/ForeignCityPage'
+
+/** 主应用路由表（仅登录后渲染） */
+function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<Navigate to="/earth" replace />} />
+      <Route path="/earth" element={<EarthPage />} />
+      <Route path="/country/:code" element={<CountryPage />} />
+      <Route path="/country/CN/:province" element={<ProvincePage />} />
+      <Route path="/country/CN/:province/:city" element={<CityPage />} />
+      <Route path="/country/:code/:r1" element={<ForeignRegionPage />} />
+      <Route path="/country/:code/:r1/:r2" element={<ForeignCityPage />} />
+      <Route path="*" element={<Navigate to="/earth" replace />} />
+    </Routes>
+  )
+}
+
+/**
+ * 门控：initializing 期间显示空屏（避免闪一下登录页）；
+ * 未登录显示账号页；已登录渲染主应用 + 全局登出条。
+ */
+function AppGate() {
+  const { user, initializing } = useAuth()
+  if (initializing) return null
+  if (!user) return <AuthPage />
+  return (
+    <>
+      <AccountBar />
+      {/* key={user.id}：换账号/登出后重新挂载 Provider，天然清空旧数据 */}
+      <AppStoreProvider key={user.id}>
+        <AppRoutes />
+      </AppStoreProvider>
+    </>
+  )
+}
+
 export default function App() {
   return (
-    <AppStoreProvider>
+    <AuthProvider>
       <HashRouter>
-        <Routes>
-          <Route path="/" element={<Navigate to="/earth" replace />} />
-          <Route path="/earth" element={<EarthPage />} />
-          <Route path="/country/:code" element={<CountryPage />} />
-          <Route path="/country/CN/:province" element={<ProvincePage />} />
-          <Route
-            path="/country/CN/:province/:city"
-            element={<CityPage />}
-          />
-          <Route
-            path="/country/:code/:r1"
-            element={<ForeignRegionPage />}
-          />
-          <Route
-            path="/country/:code/:r1/:r2"
-            element={<ForeignCityPage />}
-          />
-          <Route path="*" element={<Navigate to="/earth" replace />} />
-        </Routes>
+        <AppGate />
       </HashRouter>
-    </AppStoreProvider>
+    </AuthProvider>
   )
 }

@@ -11,6 +11,7 @@
     "verify:data": "node scripts/verify-local.mjs && node scripts/verify-foreign.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.119.2",
     "china-division": "^2.7.0",
     "d3-geo": "^3.1.1",
     "geojson-rewind": "^0.3.1",

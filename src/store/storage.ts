@@ -1,16 +1,19 @@
 /**
  * 持久化存储层：旅行回忆的 localStorage 读写（schema v2）。
  *
- * 点亮语义（v2 核心变更）：
+ * 阶段 5 角色变化（重要）：
+ * - 云端是"真源"：回忆数据存 Supabase（memories / memory_photos / Storage），
+ *   localStorage 不再是运行时的写入目标；
+ * - 本文件保留 loadState() 只做"一次性导入"：登录后把 v2 旧数据逐条
+ *   写入云端，成功后清除本地（见 Memories 组件的导入按钮与 store 层）。
+ * - MemoryItem.photos 为云端照片元数据（storagePath 等）；本地 v2 数据
+ *   没有照片字段，迁移时补 []（纯文字回忆）。
+ *
+ * 点亮语义（v2 核心变更，云端沿用）：
  * - "去过/点亮"不再有独立 visited 状态，完全由回忆推导——某个地区亮
  *   当且仅当存在一条回忆，其 visitedKey 等于该地区，或其 ancestorKeys
  *   包含该地区（即"下辖有回忆"）。删掉最后一条回忆自动熄灭。
  * - 因此存储里只有 memories；visited 推导结果不落盘（由回忆即时算出）。
- *
- * 存储方案：
- * - localStorage 单 key JSON（`travel-journal.v2`），回忆是纯文本，
- *   总量远小于 5MB；同步写保证"写完即可刷新不丢"。
- * - 图片回忆不纳入：必须走 IndexedDB 存 blob + 压缩链路，后续阶段做。
  *
  * schema v2：
  *   {
@@ -22,6 +25,16 @@
  * schema 升级约定：递增 version 并在 migrate() 里加迁移分支，
  * 旧版本数据先迁移再返回，不允许静默丢弃。
  */
+/** 照片元数据（阶段 5；blob 本体在 Storage bucket `photos`，库里只存引用） */
+export interface MemoryPhoto {
+  /** 照片记录唯一 id（云端 memory_photos.id） */
+  id: string
+  /** bucket 内路径：<user_id>/<memory_id>/<文件名>（Storage 鉴权按首段） */
+  storagePath: string
+  /** 展示顺序（同回忆内 0 起递增） */
+  sortOrder: number
+}
+
 /** 旅行回忆条目（核心模型，含义自解释） */
 export interface MemoryItem {
   /** 唯一 id（crypto.randomUUID()，兼容性兜底见 addMemory） */
@@ -32,7 +45,7 @@ export interface MemoryItem {
   placeName: string
   /** 回忆日期（yyyy-MM-dd，用户可改，默认今天） */
   date: string
-  /** 回忆正文（多行文本，长度限制见 Memories 组件） */
+  /** 回忆正文（多行文本，长度限制见 Memories 组件；纯图片回忆可为空串） */
   text: string
   /** 创建时间戳（epoch ms，同日排序兜底） */
   createdAt: number
@@ -43,6 +56,8 @@ export interface MemoryItem {
    * v1 旧数据无此字段，迁移时补 []（旧回忆只点亮自身，父层不亮）。
    */
   ancestorKeys: string[]
+  /** 照片元数据（阶段 5；本地 v2 旧数据无此字段，迁移补 []） */
+  photos: MemoryPhoto[]
 }
 
 /** localStorage 的存储 key（当前版本 v2；v1 key 用于迁移读取） */
@@ -96,10 +111,13 @@ function isValidMemory(item: unknown): item is MemoryItem {
   )
 }
 
-/** 补齐 v1 缺的字段：ancestorKeys 缺省为空数组（旧回忆只点亮自身） */
+/** 补齐旧数据缺的字段：ancestorKeys 缺省 []（旧回忆只点亮自身）；photos 缺省 [] */
 function normalizeMemory(item: MemoryItem): MemoryItem {
-  if (Array.isArray(item.ancestorKeys)) return item
-  return { ...item, ancestorKeys: [] }
+  return {
+    ...item,
+    ancestorKeys: Array.isArray(item.ancestorKeys) ? item.ancestorKeys : [],
+    photos: Array.isArray(item.photos) ? item.photos : [],
+  }
 }
 
 /**
@@ -150,8 +168,7 @@ export function loadState(): PersistedState | null {
 
 /**
  * 写入全部持久化状态（同步写）。
- * 数据量小（纯文本回忆），同步写在性能上没有可感知开销，
- * 且比 debounce 更稳（刷新前必落盘）。
+ * 阶段 5 起仅用于"导入前的临时读"，不再被运行时调用；保留为幂等实现。
  * 写入失败（隐私模式/写满）静默忽略——页面用内存态照常渲染。
  */
 export function saveState(state: PersistedState): void {
@@ -159,5 +176,18 @@ export function saveState(state: PersistedState): void {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
   } catch {
     // 存储不可用：静默降级（页面仍可用，只是不持久化）
+  }
+}
+
+/**
+ * 清除本地 v2（与 v1）数据：云端导入成功后调用，避免下次再提示导入。
+ * 清除失败（隐私模式）静默忽略——不影响主流程。
+ */
+export function clearLocalMemories(): void {
+  try {
+    window.localStorage.removeItem(STORAGE_KEY)
+    window.localStorage.removeItem(LEGACY_STORAGE_KEY)
+  } catch {
+    // 隐私模式等：忽略
   }
 }

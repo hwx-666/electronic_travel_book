@@ -12,6 +12,11 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# ---- 环境变量（含密钥，勿提交；示例见 .env.example）----
+.env
+.env.*
+!.env.example
+
 # ---- 本地配置（DeepWorks 工作区 / 编辑器）----
 .opencode
 .deepworks

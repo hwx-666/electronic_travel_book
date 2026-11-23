@@ -1,0 +1,141 @@
+/* 账号页：登录/注册（阶段 5）。
+   全屏居中卡片，颜色走主题变量；z-index 独立，与地图/地球无冲突。 */
+.auth {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-app-bg);
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.auth__card {
+  width: min(400px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-content-bg);
+  padding: 28px 28px 24px;
+}
+
+.auth__brand {
+  text-align: center;
+}
+
+.auth__title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--color-content-text);
+}
+
+.auth__desc {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-content-text);
+  opacity: 0.75;
+}
+
+/* 登录 / 注册切换 */
+.auth__tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 12px;
+}
+
+.auth__tab {
+  flex: 1;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 0;
+  background: transparent;
+  color: var(--color-content-text);
+  font-size: 14px;
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.auth__tab[data-active='true'] {
+  background: var(--color-button-bg);
+  color: var(--color-button-text);
+  opacity: 1;
+}
+
+.auth__form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.auth__label {
+  font-size: 13px;
+  color: var(--color-content-text);
+  opacity: 0.85;
+}
+
+.auth__input {
+  font: inherit;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: var(--color-app-bg);
+  color: var(--color-content-text);
+}
+
+.auth__input:focus {
+  outline: none;
+  border-color: var(--color-content-text);
+}
+
+/* 错误 / 提示信息（单行，超长省略） */
+.auth__message {
+  font-size: 13px;
+  line-height: 1.5;
+  min-height: 20px;
+  word-break: break-word;
+}
+
+.auth__message--error {
+  color: #e8a87c;
+}
+
+.auth__message--info {
+  color: var(--color-content-text);
+  opacity: 0.85;
+}
+
+.auth__submit {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 22px;
+  background: var(--color-button-bg);
+  color: var(--color-button-text);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.auth__submit:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.auth__note {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--color-content-text);
+  opacity: 0.6;
+  text-align: center;
+}
